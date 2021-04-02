@@ -1,0 +1,239 @@
+#################################################################
+## Iro
+################################################################ 
+##
+## * Press Ctrl + '+'/'-' To Zoom in
+## * Press Ctrl + S to save and recalculate... 
+## * Documents are saved to web storage.
+## * Only one save slot supported.
+## * Matches cannot span lines.
+## * Unicode chars must be defined in \u0000 to \uffff format.
+## * All matches must be contained by a single group ( ... )
+## * Look behinds not permitted, (?<= or (?<!
+## * Look forwards are permitted (?= or (?!
+## * Constants are defined as __my_const = (......)
+## * The \= format allows unescaped regular expressions
+## * Constants referenced by match \= $${__my_const}
+## * Constants can reference other constants
+## * You are free to delete all the default scopes.
+## * Twitter : ainslec , Web: http://eeyo.io/iro
+##
+################################################################
+
+name                   = kyoml
+file_extensions []     = kyo, kyoml;
+
+################################################################
+## Constants
+################################################################
+
+__KEYWORD \= (\b[a-zA-Z][a-zA-Z0-9_]*)
+
+################################################################
+## Styles
+################################################################
+
+styles [] {
+
+.comment : style {
+   color                 = light_green
+   italic                = true
+   ace_scope             = comment
+   textmate_scope        = comment
+   pygments_scope        = Comment
+}
+
+.directive : style {
+   color                 = gold
+   italic                = false
+   ace_scope             = meta.function-call
+   textmate_scope        = meta.function-call
+   pygments_scope        = Name.Function
+}
+
+.interpolation : style {
+   color                 = green
+   italic                = false
+   ace_scope             = variable.interpolation
+   textmate_scope        = variable.interpolation
+   pygments_scope        = String.Interpol
+}
+
+.keyword : style {
+   color     = cyan
+   ace_scope             = keyword
+   textmate_scope        = keyword
+   pygments_scope        = Keyword
+}
+
+.numeric : style {
+   color                 = gold
+   ace_scope             = constant.numeric
+   textmate_scope        = constant.numeric
+   pygments_scope        = Number
+}
+
+.punctuation : style {
+   color     = violet_red
+   ace_scope             = punctuation
+   textmate_scope        = punctuation
+   pygments_scope        = Punctuation
+}
+
+.structures : style {
+   color                = violet_red
+   ace_scope             = punctuation.definition.array
+   textmate_scope        = punctuation.definition.array
+   pygments_scope        = Punctuation
+}
+
+.operator : style {
+   color     = orange
+   ace_scope             = keyword.operator
+   textmate_scope        = keyword.operator
+   pygments_scope        = Operator
+}
+
+.text : style {
+   color                 = brown
+   ace_scope             = text
+   textmate_scope        = text
+   pygments_scope        = String
+}
+
+.illegal : style {
+   color                 = white
+   background_color      = red
+   ace_scope             = invalid
+   textmate_scope        = invalid
+   pygments_scope        = Generic.Error
+}
+
+}
+
+#################################################
+## Parse contexts
+#################################################
+
+contexts [] {
+
+##############################################
+## Main Context - Entry point context
+##############################################
+
+main : context {
+
+   : pattern {
+      regex          \= ([-+]?[\d.]+)
+      styles []       = .numeric;
+   }
+
+   : inline_push {
+      description     = blocks
+      regex          \= (\{)
+      styles []       = .structures;
+      : pop {  
+         regex       \= (\})
+         styles []    = .structures;
+      }
+      : include "main" ;
+   }
+
+   : pattern {
+      regex          \= $${__KEYWORD}
+      styles []       = .keyword;
+   }
+   
+   : inline_push {
+      regex          \= (@$${__KEYWORD}\()
+      styles []       = .directive;
+      : pop {  
+         regex       \= (\))
+         styles []    = .directive;
+      }
+      : include "main" ;
+   }
+   
+   : pattern {
+      regex \= (@$${__KEYWORD})
+      styles [] = .directive;
+   }
+   
+   : pattern {
+      regex \= ([=:]|\|>|<\|)
+      styles [] = .operator;
+   }
+
+   : inline_push {
+      description     = arrays
+      regex          \= ([\[])
+      styles []       = .structures;
+      : pop {  
+         regex       \= ([\]])
+         styles []    = .structures;
+      }
+      : include "main" ;
+   }
+   
+   : pattern {
+      description     = general punctuation
+      regex          \= (,)
+      styles []       = .punctuation;
+   }
+   
+   : inline_push {
+      description     = interpolated strings
+      regex          \= (\")
+      styles []       = .text;
+      : pop {
+         regex       \= (\")
+         styles []    = .text;
+      }
+      : include "interpolation";
+      : pattern {
+         regex       \= (.)
+         styles []    = .text;
+      }
+   }
+   
+   : inline_push {
+      description     = simple strings
+      regex          \= (\')
+      styles []       = .text;
+      default_style   = .text
+      : pop {
+         regex       \= (\')
+         styles []    = .text;
+      }
+   }
+   
+   : pattern {
+      description     = comments
+      regex          \= (#.*)
+      styles []       = .comment;
+   }
+   
+   : pattern {
+      regex          \= ([^\s])
+      styles []       = .illegal;
+   }
+}
+
+###########################################
+## Interpolation Context
+###########################################
+
+interpolation : context {
+   description        = interpolation
+   : inline_push {
+      regex          \= (\$\{)
+      styles []       = .interpolation;
+      default_style   = .interpolation
+      : pop {
+         regex       \= (\})
+         styles []    = .interpolation;
+      }
+   }
+}
+
+}

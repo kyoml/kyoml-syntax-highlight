@@ -1,0 +1,8 @@
+block {
+  @directive(1, [1], "ASD${asd}")
+
+  var = 2.123
+  test = [1,2,3]
+  someProp = "asdasd${asd}"
+  someProps = 'asdasd${asd}' |> @somedirective
+}

@@ -1,2 +1,5 @@
-# kyoml-syntax-highlight
-KyoML syntax highlighter for vscode (and others)
+# KyoML
+
+KyoML syntax highlighter for vscode (+ others)
+
+

@@ -1,0 +1,65 @@
+{
+  "name": "kyoml-syntax-highlight",
+  "version": "0.0.1",
+  "description": "Syntax highlighter for KyoML",
+  "displayName": "KyoML Language",
+  "main": "index.js",
+  "icon": "kyoml.png",
+  "homepage": "https://github.com/kyoml/kyoml",
+  "publisher": "KyoML",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kyoml/kyoml-syntax-highlight.git"
+  },
+  "scripts": {
+    "test": "code --extensionDevelopmentPath=`pwd` ./sample.kyo",
+    "build": "vsce package",
+    "publish": "vsce publish"
+  },
+  "engines": {
+    "vscode": "^1.8.0"
+  },
+  "activationEvents": [
+    "onLanguage:kyoml"
+  ],
+  "categories": [
+    "Programming Languages",
+    "Formatters"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "kyoml",
+        "extensions": [
+          ".kyo",
+          ".kyoml"
+        ],
+        "mimetypes": [
+          "text/x-kyoml"
+        ],
+        "aliases": [
+          "KYOML",
+          "KyoML"
+        ],
+        "configuration": "./config/vscode.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "kyoml",
+        "scopeName": "source.kyoml",
+        "path": "./syntaxes/textmate/grammar.tmLanguage"
+      }
+    ]
+  },
+  "keywords": [
+    "kyoml",
+    "vscode",
+    "syntax"
+  ],
+  "author": "Patrick",
+  "license": "MIT",
+  "devDependencies": {
+    "vsce": "^1.87.1"
+  }
+}

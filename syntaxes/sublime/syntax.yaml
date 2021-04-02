@@ -1,0 +1,109 @@
+%YAML 1.2
+---
+name: kyoml
+scope: source.kyoml
+file_extensions: [ kyo, kyoml ]
+
+contexts:
+  main:
+    - match: '([-\x{002b}]?[\d.]+)'
+      captures:
+        0: constant.numeric.kyoml
+    - match: '(\{)'
+      captures:
+        0: punctuation.definition.array.kyoml
+      push: 
+        - match: '(\})'
+          pop: true
+          captures:
+            0: punctuation.definition.array.kyoml
+        - include: main
+        - match: '(.)'
+          captures:
+            0: text.kyoml
+    - match: '(\b[a-zA-Z][a-zA-Z0-9_]*)'
+      captures:
+        0: keyword.kyoml
+    - match: '(@(\b[a-zA-Z][a-zA-Z0-9_]*)\()'
+      captures:
+        0: meta.function-call.kyoml
+      push: 
+        - match: '(\))'
+          pop: true
+          captures:
+            0: meta.function-call.kyoml
+        - include: main
+        - match: '(.)'
+          captures:
+            0: text.kyoml
+    - match: '(@(\b[a-zA-Z][a-zA-Z0-9_]*))'
+      captures:
+        0: meta.function-call.kyoml
+    - match: '([\x{003d}\x{003a}]|\|>|<\|)'
+      captures:
+        0: keyword.operator.kyoml
+    - match: '([\[])'
+      captures:
+        0: punctuation.definition.array.kyoml
+      push: 
+        - match: '([\]])'
+          pop: true
+          captures:
+            0: punctuation.definition.array.kyoml
+        - include: main
+        - match: '(.)'
+          captures:
+            0: text.kyoml
+    - match: '(,)'
+      captures:
+        0: punctuation.kyoml
+    - match: '(\")'
+      captures:
+        0: text.kyoml
+      push: 
+        - match: '(\")'
+          pop: true
+          captures:
+            0: text.kyoml
+        - include: interpolation
+        - match: '(.)'
+          captures:
+            0: text.kyoml
+        - match: '(.)'
+          captures:
+            0: text.kyoml
+    - match: '(\'')'
+      captures:
+        0: text.kyoml
+      push: 
+        - match: '(\'')'
+          pop: true
+          captures:
+            0: text.kyoml
+        - match: '(.)'
+          captures:
+            0: text.kyoml
+    - match: '(#.*)'
+      captures:
+        0: comment.kyoml
+    - match: '([^\s])'
+      captures:
+        0: invalid.kyoml
+    - match: '(.)'
+      captures:
+        0: text.kyoml
+  interpolation:
+    - match: '(\$\{)'
+      captures:
+        0: variable.interpolation.kyoml
+      push: 
+        - match: '(\})'
+          pop: true
+          captures:
+            0: variable.interpolation.kyoml
+        - match: '(.)'
+          captures:
+            0: variable.interpolation.kyoml
+    - match: '(.)'
+      captures:
+        0: text.kyoml
