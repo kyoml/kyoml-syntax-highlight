@@ -1,6 +1,6 @@
 {
   "name": "kyoml-syntax-highlight",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Syntax highlighter for KyoML",
   "displayName": "KyoML Language",
   "main": "index.js",
@@ -48,7 +48,7 @@
       {
         "language": "kyoml",
         "scopeName": "source.kyoml",
-        "path": "./syntaxes/textmate/grammar.tmLanguage"
+        "path": "./syntaxes/textmate/grammar.tmLanguage.json"
       }
     ]
   },

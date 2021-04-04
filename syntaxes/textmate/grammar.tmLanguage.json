@@ -1,8 +1,5 @@
 {
-  "fileTypes": [
-    "kyo",
-    "kyoml"
-  ],
+  "fileTypes": ["kyo", "kyoml"],
   "name": "kyoml",
   "patterns": [
     {
@@ -15,125 +12,99 @@
     "main": {
       "patterns": [
         {
+          "include": "#blocks"
+        },
+        {
+          "include": "#directives"
+        },
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#punctuation"
+        },
+        {
+          "include": "#illegal"
+        }
+      ]
+    },
+    "data": {
+      "patterns": [
+        {
+          "begin": "(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.array.kyoml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#data"
+            },
+            {
+              "include": "#comment"
+            }
+          ],
+          "end": "(\\])",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.array.kyoml"
+            }
+          }
+        },
+        {
           "match": "([-\\x{002b}]?[\\d.]+)",
           "name": "constant.numeric.kyoml"
         },
         {
-          "begin": "(\\{)",
-          "beginCaptures": {
-            "1": {
-              "name": "punctuation.definition.array.kyoml"
-            }
-          },
+          "match": "(true|false|yes|no)",
+          "name": "constant.language.kyoml"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#directives"
+        },
+        {
+          "include": "#punctuation"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.basic.block.kyoml",
+          "begin": "\"",
+          "end": "\"",
           "patterns": [
             {
-              "include": "#main__1"
+              "include": "#interpolation"
+            },
+            {
+              "match": "\\\\([btnfr\"\\\\\\n/ ]|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})",
+              "name": "constant.character.escape.kyoml"
+            },
+            {
+              "match": "\\\\[^btnfr/\"\\\\\\n]",
+              "name": "invalid.illegal.escape.kyoml"
             }
-          ],
-          "end": "(\\})",
-          "endCaptures": {
-            "1": {
-              "name": "punctuation.definition.array.kyoml"
-            }
-          }
+          ]
         },
         {
-          "match": "(\\b[a-zA-Z][a-zA-Z0-9_]*)",
-          "name": "keyword.kyoml"
-        },
-        {
-          "begin": "(@(\\b[a-zA-Z][a-zA-Z0-9_]*)\\()",
-          "beginCaptures": {
-            "1": {
-              "name": "meta.function-call.kyoml"
-            }
-          },
+          "name": "string.quoted.single.basic.block.kyoml",
+          "begin": "'",
+          "end": "'",
           "patterns": [
             {
-              "include": "#main__2"
-            }
-          ],
-          "end": "(\\))",
-          "endCaptures": {
-            "1": {
-              "name": "meta.function-call.kyoml"
-            }
-          }
-        },
-        {
-          "match": "(@(\\b[a-zA-Z][a-zA-Z0-9_]*))",
-          "name": "meta.function-call.kyoml"
-        },
-        {
-          "match": "([\\x{003d}\\x{003a}]|\\|>|<\\|)",
-          "name": "keyword.operator.kyoml"
-        },
-        {
-          "begin": "([\\[])",
-          "beginCaptures": {
-            "1": {
-              "name": "punctuation.definition.array.kyoml"
-            }
-          },
-          "patterns": [
+              "match": "\\\\([btnfr'\\\\\\n/ ]|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})",
+              "name": "constant.character.escape.kyoml"
+            },
             {
-              "include": "#main__3"
+              "match": "\\\\[^btnfr/'\\\\\\n]",
+              "name": "invalid.illegal.escape.kyoml"
             }
-          ],
-          "end": "([\\]])",
-          "endCaptures": {
-            "1": {
-              "name": "punctuation.definition.array.kyoml"
-            }
-          }
-        },
-        {
-          "match": "(,)",
-          "name": "punctuation.kyoml",
-          "comment": "general punctuation"
-        },
-        {
-          "begin": "\\\"",
-          "beginCaptures": {
-            "1": {
-              "name": "text.kyoml"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#main__4"
-            }
-          ],
-          "end": "\\\"",
-          "endCaptures": {
-            "1": {
-              "name": "text.kyoml"
-            }
-          }
-        },
-        {
-          "begin": "(\\')",
-          "beginCaptures": {
-            "1": {
-              "name": "text.kyoml"
-            }
-          },
-          "contentName": "text.kyoml",
-          "end": "(\\')",
-          "endCaptures": {
-            "1": {
-              "name": "text.kyoml"
-            }
-          }
-        },
-        {
-          "match": "(#.*)",
-          "name": "comment.kyoml",
-          "comment": "comments"
-        },
-        {
-          "match": "([^\\s])",
-          "name": "invalid.kyoml"
+          ]
         }
       ]
     },
@@ -143,56 +114,146 @@
           "begin": "(\\$\\{)",
           "beginCaptures": {
             "1": {
-              "name": "variable.interpolation.kyoml"
+              "name": "keyword.operator.kyoml"
             }
           },
-          "contentName": "variable.interpolation.kyoml",
+          "contentName": "string.interpolated.kyoml",
           "end": "(\\})",
           "endCaptures": {
             "1": {
-              "name": "variable.interpolation.kyoml"
+              "name": "keyword.operator.kyoml"
             }
           }
         }
       ]
     },
-    "interpolation__1": {
-      "patterns": []
-    },
-    "main__1": {
+    "comment": {
       "patterns": [
         {
-          "include": "#main"
+          "captures": {
+            "1": {
+              "name": "comment.line.number-sign.kyoml"
+            },
+            "2": {
+              "name": "punctuation.definition.comment.kyoml"
+            }
+          },
+          "comment": "Comments",
+          "match": "\\s*((#).*)$"
         }
       ]
     },
-    "main__2": {
+    "punctuation": {
       "patterns": [
         {
-          "include": "#main"
+          "match": "(,)",
+          "name": "punctuation.kyoml",
+          "comment": "general punctuation"
         }
       ]
     },
-    "main__3": {
+    "key_value": {
       "patterns": [
         {
-          "include": "#main"
-        }
-      ]
-    },
-    "main__4": {
-      "patterns": [
-        {
-          "include": "#interpolation"
+          "name": "invalid.illegal.noKey.kyoml",
+          "match": "(\\s*=.*)$"
         },
         {
-          "match": "(.)",
-          "name": "text.kyoml"
+          "name": "invalid.deprecated.noValue.kyoml",
+          "match": "(\\s*[A-Za-z_\\-][A-Za-z0-9_\\-]*\\s*=)(?=\\s*$)"
+        },
+        {
+          "begin": "\\s*([A-Za-z_][A-Za-z0-9_-]*)\\s*(=)\\s*",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.tag.kyoml"
+            },
+            "2": {
+              "name": "punctuation.definition.keyValue.kyoml"
+            }
+          },
+          "end": "($|\\,|\\s*(?=\\}))",
+          "patterns": [
+            {
+              "include": "#data"
+            },
+            {
+              "include": "#comment"
+            }
+          ]
         }
       ]
     },
-    "main__5": {
-      "patterns": []
+    "directives": {
+      "patterns": [
+        {
+          "match": "([\\x{003d}\\x{003a}]|\\|>|<\\|)",
+          "name": "keyword.other.kyoml"
+        },
+        {
+          "begin": "(@(\\b[a-zA-Z][a-zA-Z0-9_]*)\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "support.function.kyoml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#data"
+            },
+            {
+              "include": "#comment"
+            }
+          ],
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "support.function.kyoml"
+            }
+          }
+        },
+        {
+          "match": "(@(\\b[a-zA-Z][a-zA-Z0-9_]*))",
+          "name": "support.function.kyoml"
+        }
+      ]
+    },
+    "blocks": {
+      "patterns": [
+        {
+          "begin": "(\\b[a-zA-Z][a-zA-Z0-9_]*)\\s*(\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.section.kyoml"
+            },
+            "2": {
+              "name": "punctuation.definition.array.kyoml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#main"
+            }
+          ],
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.array.kyoml"
+            }
+          }
+        },
+        {
+          "include": "#key_value"
+        }
+      ]
+    },
+    "illegal": {
+      "patterns": [
+        {
+          "match": "([^\\s])",
+          "name": "invalid.illegal.kyoml"
+        }
+      ]
     }
   }
 }

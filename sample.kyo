@@ -1,8 +1,67 @@
-block {
-  @directive(1, [1], "ASD${asd}")
+## Block
 
-  var = 2.123
-  test = [1,2,3]
-  someProp = "asdasd${asd}"
-  someProps = 'asdasd${asd}' |> @somedirective
+block {
+  @directive()
+
+  key =  ["hi", 2,3, [1, 1 |> @hello]]
+
+  key       = 2.123
+  key       = [1, 2]
+  key       = true 
+  key       = 'world'
+  key       = "Hello ${world}"
+  key       = 'bar' |> @prop |> @prop(false) # comment
+
+  sublock {
+    subkey = 1
+    subkey = true # A comment
+  }
 }
+
+## Pipes
+
+key = @uppercase <| 'some data'
+key = 'more data' |> @validate |> @uppercase
+
+## Invalid
+
+%%%
+*&%
+
+## Directives
+
+@directive
+@directive("hello ${world}")
+@directive(
+  1,            # multi
+  true,         # line
+  [3],          # directive
+  'hi ${asd}'   # with comments
+)
+
+## Arrays
+
+key = [
+  1 |> @directive,
+  2,  # A comment
+  3
+]
+
+## Booleans
+
+key = true
+key = false
+key = yes
+key = no
+
+## Numbers
+
+key = 1
+key = 1.2
+key = -1.2
+
+## Strings
+
+key = "hello"
+key = 'hello'
+key = "hello ${world}"
