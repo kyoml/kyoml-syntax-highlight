@@ -172,13 +172,13 @@ var kyomlHighlightRules = function() {
             ],
             regex: /(\s*)([A-Za-z_][A-Za-z0-9_-]*)(\s*)(=)(\s*)/,
             push: [{
-                token: "text",
-                regex: /$|\,|\s*(?=\})/,
-                next: "pop"
-            }, {
                 include: "#data"
             }, {
                 include: "#comment"
+            }, {
+                token: "text",
+                regex: /$|\,|\s*(?=\}|\s*\n\s*([A-Za-z_][A-Za-z0-9_-]*))/,
+                next: "pop"
             }]
         }],
         "#map_key_value": [{

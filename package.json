@@ -1,6 +1,6 @@
 {
   "name": "kyoml-syntax-highlight",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Syntax highlighter for KyoML",
   "displayName": "KyoML Language",
   "main": "index.js",

@@ -194,7 +194,7 @@
               "name": "punctuation.definition.keyValue.kyoml"
             }
           },
-          "end": "($|\\,|\\s*(?=\\}))",
+          "end": "($|\\,|\\s*(?=\\})|\\s*\\n\\s*([A-Za-z_][A-Za-z0-9_-]*))",
           "patterns": [
             {
               "include": "#data"
