@@ -34,7 +34,7 @@
  * fileTypes                                                                            *
  ****************************************************************************************/
 
-ace.define(function(require, exports, module) {
+define(function(require, exports, module) {
 "use strict";
 
 var oop = require("../lib/oop");
@@ -68,6 +68,18 @@ var kyomlHighlightRules = function() {
                 next: "pop"
             }, {
                 include: "#data"
+            }, {
+                include: "#comment"
+            }]
+        }, {
+            token: "punctuation.definition.map.kyoml",
+            regex: /\{/,
+            push: [{
+                token: "punctuation.definition.map.kyoml",
+                regex: /\}/,
+                next: "pop"
+            }, {
+                include: "#map_key_value"
             }, {
                 include: "#comment"
             }]
@@ -159,6 +171,31 @@ var kyomlHighlightRules = function() {
                 "text"
             ],
             regex: /(\s*)([A-Za-z_][A-Za-z0-9_-]*)(\s*)(=)(\s*)/,
+            push: [{
+                token: "text",
+                regex: /$|\,|\s*(?=\})/,
+                next: "pop"
+            }, {
+                include: "#data"
+            }, {
+                include: "#comment"
+            }]
+        }],
+        "#map_key_value": [{
+            token: "invalid.illegal.noKey.kyoml",
+            regex: /\s*:.*$/
+        }, {
+            token: "invalid.deprecated.noValue.kyoml",
+            regex: /\s*"[A-Za-z_\-][A-Za-z0-9_\-]*"\s*:(?=\s*$)/
+        }, {
+            token: [
+                "text",
+                "string.quoted.double.basic.kyoml",
+                "text",
+                "punctuation.definition.keyValue.kyoml",
+                "text"
+            ],
+            regex: /(\s*)("[A-Za-z_][A-Za-z0-9_-]*")(\s*)(:)(\s*)/,
             push: [{
                 token: "text",
                 regex: /$|\,|\s*(?=\})/,

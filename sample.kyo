@@ -3,7 +3,9 @@
 block {
   @directive()
 
-  key =  ["hi", 2,3, [1, 1 |> @hello]]
+  key =  ["hi", 2,3, [1, 1 |> @hello], {
+    "foo": "bar"
+  }]
 
   key       = 2.123
   key       = [1, 2]
@@ -46,6 +48,15 @@ key = [
   2,  # A comment
   3
 ]
+
+## Maps
+
+key = {
+  "num": 123,    # A comment
+  "foo": {
+    "bar": "1"
+  }
+}
 
 ## Booleans
 
