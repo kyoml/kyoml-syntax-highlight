@@ -177,7 +177,7 @@ var kyomlHighlightRules = function() {
                 include: "#comment"
             }, {
                 token: "text",
-                regex: /$|\,|\s*(?=\}|\s*\n\s*([A-Za-z_][A-Za-z0-9_-]*))/,
+                regex: /$|\,|\s*(?=\}|[A-Za-z_])/,
                 next: "pop"
             }]
         }],

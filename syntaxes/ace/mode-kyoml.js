@@ -139,7 +139,7 @@ define("ace/mode/kyoml_highlight_rules",["require","exports","module","ace/lib/o
                     include: "#comment"
                 }, {
                     token: "text",
-                    regex: /$|\,|\s*(?=\}|\s*\n\s*([A-Za-z_][A-Za-z0-9_-]*))/,
+                    regex: /$|\,|\s*(?=\}|[A-Za-z_])/,
                     next: "pop"
                 }]
             }],
