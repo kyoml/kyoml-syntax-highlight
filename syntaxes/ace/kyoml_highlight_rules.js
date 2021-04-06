@@ -34,7 +34,7 @@
  * fileTypes                                                                            *
  ****************************************************************************************/
 
-define(function(require, exports, module) {
+ace.define(function(require, exports, module) {
 "use strict";
 
 var oop = require("../lib/oop");
