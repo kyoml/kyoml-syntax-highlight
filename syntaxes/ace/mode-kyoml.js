@@ -34,6 +34,18 @@ var kyomlHighlightRules = function() {
                 include: "#comment"
             }]
         }, {
+            token: "punctuation.definition.map.kyoml",
+            regex: /\{/,
+            push: [{
+                token: "punctuation.definition.map.kyoml",
+                regex: /\}/,
+                next: "pop"
+            }, {
+                include: "#map_key_value"
+            }, {
+                include: "#comment"
+            }]
+        }, {
             token: "constant.numeric.kyoml",
             regex: /[-\x002b]?[\d.]+/
         }, {
@@ -121,6 +133,31 @@ var kyomlHighlightRules = function() {
                 "text"
             ],
             regex: /(\s*)([A-Za-z_][A-Za-z0-9_-]*)(\s*)(=)(\s*)/,
+            push: [{
+                token: "text",
+                regex: /$|\,|\s*(?=\})/,
+                next: "pop"
+            }, {
+                include: "#data"
+            }, {
+                include: "#comment"
+            }]
+        }],
+        "#map_key_value": [{
+            token: "invalid.illegal.noKey.kyoml",
+            regex: /\s*:.*$/
+        }, {
+            token: "invalid.deprecated.noValue.kyoml",
+            regex: /\s*"[A-Za-z_\-][A-Za-z0-9_\-]*"\s*:(?=\s*$)/
+        }, {
+            token: [
+                "text",
+                "string.quoted.double.basic.kyoml",
+                "text",
+                "punctuation.definition.keyValue.kyoml",
+                "text"
+            ],
+            regex: /(\s*)("[A-Za-z_][A-Za-z0-9_-]*")(\s*)(:)(\s*)/,
             push: [{
                 token: "text",
                 regex: /$|\,|\s*(?=\})/,
